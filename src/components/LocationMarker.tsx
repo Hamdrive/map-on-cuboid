@@ -1,25 +1,24 @@
-import { Marker, Popup, useMapEvents } from 'react-leaflet';
-import { useState } from "react";
-import { LatLng, LatLngTuple } from 'leaflet';
+import { Marker, Popup, useMapEvents } from "react-leaflet";
+import { LatLng, LatLngTuple } from "leaflet";
 
 interface LocationMarkerProps {
-    position: LatLngTuple;
-    setPosition: (position: LatLng) => void
+  position: LatLngTuple;
+  setPosition: (position: LatLng) => void;
 }
 
-const LocationMarker = ({position, setPosition}: LocationMarkerProps) => {
+const LocationMarker = ({ position, setPosition }: LocationMarkerProps) => {
   const map = useMapEvents({
     click: (e) => {
-    setPosition(e.latlng);
-    map.flyTo(e.latlng, 18);
+      setPosition(e.latlng);
+      map.flyTo(e.latlng, 18);
     },
   });
 
-  return position === null ? null : (
+  return position ? (
     <Marker position={position}>
-      <Popup>Are you ready to meet Bill?</Popup>
+      <Popup>This is your location</Popup>
     </Marker>
-  );
+  ) : null;
 };
 
 export default LocationMarker;

@@ -1,12 +1,17 @@
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import LocationMarker from './LocationMarker';
-import Button from './Button';
-import { useState } from 'react';
+import LocationMarker from "./LocationMarker";
+import Button from "./Button";
+import { useState } from "react";
+import * as htmlToImage from "html-to-image";
 
+interface MapsProps {
+  setUserImage: (img: string) => void;
+  userImage: string;
+}
 
-const Maps = () => {
-    const [position, setPosition] = useState<any>(null);
+const Maps = ({ setUserImage, userImage }: MapsProps) => {
+  const [position, setPosition] = useState<any>(null);
 
   const defaultProps = {
     center: {
@@ -15,8 +20,18 @@ const Maps = () => {
     },
     zoom: 11,
   };
+
+  const handleButtonClick = async () => {
+    if (userImage) setUserImage("");
+    else {
+      const doc: HTMLElement = document.querySelector(".leaflet-container")!;
+      const canvas = await htmlToImage.toJpeg(doc, { quality: 1 });
+      setUserImage(canvas);
+    }
+  };
+
   return (
-    <div className='map-container'>
+    <div className="map-container">
       <MapContainer
         center={[defaultProps.center.lat, defaultProps.center.lng]}
         zoom={defaultProps.zoom}
@@ -28,7 +43,12 @@ const Maps = () => {
         />
         <LocationMarker position={position} setPosition={setPosition} />
       </MapContainer>
-      {position ? <Button text='Click to meet bill'/> : null}
+      {position ? (
+        <Button
+          clickHandler={handleButtonClick}
+          text={userImage ? "Close Cuboid view" : "View on Cuboid"}
+        />
+      ) : null}
     </div>
   );
 };
