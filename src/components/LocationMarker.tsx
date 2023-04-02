@@ -1,5 +1,5 @@
 import { Marker, Popup, useMapEvents } from "react-leaflet";
-import { LatLng, LatLngTuple } from "leaflet";
+import { Icon, LatLng, LatLngTuple } from "leaflet";
 
 interface LocationMarkerProps {
   position: LatLngTuple;
@@ -14,8 +14,13 @@ const LocationMarker = ({ position, setPosition }: LocationMarkerProps) => {
     },
   });
 
+  const customIcon = new Icon({
+    iconUrl: "https://cdn-icons-png.flaticon.com/512/2776/2776067.png",
+    iconSize: [38, 38],
+  });
+
   return position ? (
-    <Marker position={position}>
+    <Marker position={position} icon={customIcon}>
       <Popup>This is your location</Popup>
     </Marker>
   ) : null;
