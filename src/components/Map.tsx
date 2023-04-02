@@ -24,7 +24,7 @@ const Maps = ({ setUserImage, userImage }: MapsProps) => {
   const handleButtonClick = async () => {
     if (userImage) setUserImage("");
     else {
-      const doc: HTMLElement = document.querySelector(".leaflet-container")!;
+      const doc = document.querySelector(".leaflet-container")! as HTMLElement;
       const canvas = await htmlToImage.toJpeg(doc, { quality: 1 });
       setUserImage(canvas);
     }
