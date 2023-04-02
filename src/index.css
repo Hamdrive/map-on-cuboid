@@ -11,10 +11,20 @@ body {
   margin: 0 !important;
 }
 
-.map-container{
-  position: relative;
+.wrapper {
+  display: flex;
 }
 
+.map-container {
+  position: relative;
+  flex: 1 50%;
+  display: flex;
+}
+
+.cuboid-container {
+  flex: 1 50%;
+  display: flex;
+}
 
 .btn {
   background: none;
@@ -31,22 +41,22 @@ body {
 }
 
 .btn-glow {
-  background-color: blue;
+  background-color: #4681f4;
   color: #fff;
   font-size: 1rem;
   font-weight: 600;
   text-transform: uppercase;
   padding: 16px 16px;
-  box-shadow: 0 0 0 0 blue;
+  box-shadow: 0 0 0 0 #4681f4;
   animation: glow 1.4s linear infinite;
 }
 
 @keyframes glow {
   0% {
-    box-shadow: 0 0 0 0 blue;
+    box-shadow: 0 0 0 0 #4681f4;
   }
-  
+
   50% {
-    box-shadow: 0 0 30px 0 blue;
+    box-shadow: 0 0 30px 0 #4681f4;
   }
 }
