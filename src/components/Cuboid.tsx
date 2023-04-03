@@ -1,9 +1,43 @@
-import { useRef } from "react";
-import { Engine, Scene } from "react-babylonjs";
+import { Suspense } from "react";
+import {
+  Engine,
+  Scene,
+  Task,
+  TaskType,
+  useAssetManager,
+} from "react-babylonjs";
 import { Vector3, Color3 } from "@babylonjs/core";
 
 const Cuboid = ({ userImage }: any) => {
-  const boxRef = useRef(null);
+  const RenderImage = ({ userImage }: any) => {
+    const textureAssets: Task[] = [
+      {
+        taskType: TaskType.Texture,
+        url: userImage,
+        name: "tap",
+      },
+    ];
+
+    const assetManagerResult = useAssetManager(textureAssets, {
+      useDefaultLoadingScreen: true,
+    });
+
+    return (
+      <box
+        name="map"
+        size={2}
+        position={new Vector3(0, 0, 0)}
+        height={1}
+        width={0.75}
+        depth={0.25}
+        wrap
+      >
+        <standardMaterial name="map">
+          <texture url={userImage} assignTo="emissiveTexture" />
+        </standardMaterial>
+      </box>
+    );
+  };
 
   return (
     <div className="cuboid-container">
@@ -16,28 +50,9 @@ const Cuboid = ({ userImage }: any) => {
             beta={Math.PI / 4}
             radius={2}
           />
-          <hemisphericLight
-            name="light1"
-            intensity={0.7}
-            direction={Vector3.Up()}
-            specular={Color3.White()}
-            groundColor={Color3.White()}
-          />
-          <box
-            name="map"
-            ref={boxRef}
-            size={2}
-            position={new Vector3(0, 0, 0)}
-            height={1}
-            width={0.75}
-            depth={0.25}
-            // faceUV={faceUV}
-            wrap
-          >
-            <standardMaterial name="map">
-              <texture url={userImage} assignTo={"diffusiveTexture"} />
-            </standardMaterial>
-          </box>
+          <Suspense fallback={null}>
+            <RenderImage userImage={userImage} />
+          </Suspense>
         </Scene>
       </Engine>
     </div>
