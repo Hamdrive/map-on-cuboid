@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { memo, Suspense } from "react";
 import {
   Engine,
   Scene,
@@ -8,8 +8,14 @@ import {
 } from "react-babylonjs";
 import { Vector3, Color3 } from "@babylonjs/core";
 
-const Cuboid = ({ userImage }: any) => {
-  const RenderImage = ({ userImage }: any) => {
+interface ShapeProps {
+  userImage: string;
+}
+
+interface CuboidProps extends ShapeProps {}
+
+const Cuboid = ({ userImage }: CuboidProps) => {
+  const Shape = ({ userImage }: ShapeProps) => {
     const textureAssets: Task[] = [
       {
         taskType: TaskType.Texture,
@@ -39,6 +45,12 @@ const Cuboid = ({ userImage }: any) => {
     );
   };
 
+  const arePropsEqual = (prevProps:Readonly<ShapeProps>, nextProps:Readonly<ShapeProps>) => {
+    return prevProps.userImage === nextProps.userImage
+  }
+
+  const MemoizedShape = memo(Shape, arePropsEqual);
+
   return (
     <div className="cuboid-container">
       <Engine antialias adaptToDeviceRatio canvasId="babylonJS">
@@ -51,7 +63,7 @@ const Cuboid = ({ userImage }: any) => {
             radius={2}
           />
           <Suspense fallback={null}>
-            <RenderImage userImage={userImage} />
+            <MemoizedShape userImage={userImage} />
           </Suspense>
         </Scene>
       </Engine>
