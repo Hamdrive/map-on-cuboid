@@ -12,9 +12,9 @@ interface ShapeProps {
   userImage: string;
 }
 
-interface CuboidProps extends ShapeProps {}
+interface CuboidProps extends ShapeProps { viewCuboid: boolean}
 
-const Cuboid = ({ userImage }: CuboidProps) => {
+const Cuboid = ({ userImage, viewCuboid }: CuboidProps) => {
   const Shape = ({ userImage }: ShapeProps) => {
     const textureAssets: Task[] = [
       {
@@ -52,7 +52,10 @@ const Cuboid = ({ userImage }: CuboidProps) => {
   const MemoizedShape = memo(Shape, arePropsEqual);
 
   return (
-    <div className="cuboid-container">
+    <div
+      className="cuboid-container"
+      style={{ display: viewCuboid ? "block" : "none" }}
+    >
       <Engine antialias adaptToDeviceRatio canvasId="babylonJS">
         <Scene>
           <arcRotateCamera
